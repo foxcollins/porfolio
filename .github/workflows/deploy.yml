@@ -1,5 +1,6 @@
 # Publica el build de Vite en GitHub Pages.
-# En el repo: Settings → Pages → Build: GitHub Actions.
+# Repo: Settings → Pages → Build: GitHub Actions.
+# Actions → General: "Allow all actions" y Workflow permissions → Read and write.
 
 name: Deploy to GitHub Pages
 
@@ -17,7 +18,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,13 +34,5 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
       - id: deployment
         uses: actions/deploy-pages@v4
