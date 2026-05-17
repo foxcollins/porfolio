@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type FormEvent } from 'react'
 import profilePhoto from './assets/profile.png'
+import { WEB3FORMS_ACCESS_KEY } from './config/web3forms'
 import {
   type ProjectCategory,
   education,
@@ -26,11 +27,53 @@ function projectCoverSrc(pathOrUrl: string): string {
 
 function App() {
   const [active, setActive] = useState<ProjectCategory>('all')
+  const [contactName, setContactName] = useState('')
+  const [contactEmail, setContactEmail] = useState('')
+  const [contactMessage, setContactMessage] = useState('')
+  const [contactState, setContactState] = useState<
+    'idle' | 'sending' | 'success' | 'error'
+  >('idle')
+  const [contactError, setContactError] = useState<string | null>(null)
 
   const filtered = useMemo(() => {
     if (active === 'all') return projects
     return projects.filter((p) => p.category === active)
   }, [active])
+
+  async function handleContactSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setContactError(null)
+    setContactState('sending')
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name: contactName.trim(),
+          email: contactEmail.trim(),
+          message: contactMessage.trim(),
+          subject: `Contacto desde portafolio — ${site.name}`,
+        }),
+      })
+      const data: { success?: boolean; message?: string } = await res.json()
+      if (data.success) {
+        setContactState('success')
+        setContactName('')
+        setContactEmail('')
+        setContactMessage('')
+      } else {
+        setContactState('error')
+        setContactError(data.message ?? 'No se pudo enviar el mensaje.')
+      }
+    } catch {
+      setContactState('error')
+      setContactError('Error de red. Inténtalo de nuevo.')
+    }
+  }
 
   return (
     <>
@@ -344,14 +387,10 @@ function App() {
               </li>
               <li className="max-w-md text-pretty">{site.contact.address}</li>
             </ul>
-            <p className="mt-8 text-xs text-navy-200">
-              Formulario: usa Formspree / Web3Forms o similar en HTML estático
-              (sin servidor).
-            </p>
           </div>
           <form
             className="space-y-4 rounded-xl bg-navy-800/50 p-6 ring-1 ring-white/10"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleContactSubmit}
           >
             <div>
               <label className="block text-xs font-medium text-navy-200" htmlFor="name">
@@ -359,7 +398,16 @@ function App() {
               </label>
               <input
                 id="name"
-                className="mt-1 w-full rounded-md border border-white/10 bg-navy-900/80 px-3 py-2 text-sm text-white outline-none ring-white/20 focus:ring-2"
+                name="name"
+                required
+                autoComplete="name"
+                value={contactName}
+                onChange={(e) => {
+                  setContactName(e.target.value)
+                  if (contactState === 'success') setContactState('idle')
+                }}
+                disabled={contactState === 'sending'}
+                className="mt-1 w-full rounded-md border border-white/10 bg-navy-900/80 px-3 py-2 text-sm text-white outline-none ring-white/20 focus:ring-2 disabled:opacity-60"
               />
             </div>
             <div>
@@ -368,8 +416,17 @@ function App() {
               </label>
               <input
                 id="email"
+                name="email"
                 type="email"
-                className="mt-1 w-full rounded-md border border-white/10 bg-navy-900/80 px-3 py-2 text-sm text-white outline-none ring-white/20 focus:ring-2"
+                required
+                autoComplete="email"
+                value={contactEmail}
+                onChange={(e) => {
+                  setContactEmail(e.target.value)
+                  if (contactState === 'success') setContactState('idle')
+                }}
+                disabled={contactState === 'sending'}
+                className="mt-1 w-full rounded-md border border-white/10 bg-navy-900/80 px-3 py-2 text-sm text-white outline-none ring-white/20 focus:ring-2 disabled:opacity-60"
               />
             </div>
             <div>
@@ -381,15 +438,34 @@ function App() {
               </label>
               <textarea
                 id="message"
+                name="message"
                 rows={4}
-                className="mt-1 w-full rounded-md border border-white/10 bg-navy-900/80 px-3 py-2 text-sm text-white outline-none ring-white/20 focus:ring-2"
+                required
+                value={contactMessage}
+                onChange={(e) => {
+                  setContactMessage(e.target.value)
+                  if (contactState === 'success') setContactState('idle')
+                }}
+                disabled={contactState === 'sending'}
+                className="mt-1 w-full rounded-md border border-white/10 bg-navy-900/80 px-3 py-2 text-sm text-white outline-none ring-white/20 focus:ring-2 disabled:opacity-60"
               />
             </div>
+            {contactState === 'success' ? (
+              <p className="text-sm font-medium text-emerald-300" role="status">
+                Mensaje enviado. Te responderé pronto.
+              </p>
+            ) : null}
+            {contactState === 'error' && contactError ? (
+              <p className="text-sm font-medium text-red-300" role="alert">
+                {contactError}
+              </p>
+            ) : null}
             <button
               type="submit"
-              className="w-full rounded-md bg-white px-4 py-2.5 text-sm font-semibold text-navy-900 hover:bg-navy-100"
+              disabled={contactState === 'sending'}
+              className="w-full rounded-md bg-white px-4 py-2.5 text-sm font-semibold text-navy-900 hover:bg-navy-100 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              Enviar
+              {contactState === 'sending' ? 'Enviando…' : 'Enviar'}
             </button>
           </form>
         </div>
