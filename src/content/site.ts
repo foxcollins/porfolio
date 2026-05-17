@@ -117,16 +117,22 @@ export const whatIBuild = {
     'Automatización de procesos repetitivos y piezas de IA aplicada donde aporta ROI.',
     'Arquitectura lista para crecer: límites claros entre capas, observabilidad básica y despliegue en la nube.',
   ],
+  /** Flujo visual “Cómo construyo productos” (sección premium oscura). */
+  productFlow: {
+    eyebrow: 'Flujo',
+    title: 'Cómo construyo productos',
+    subtitle:
+      'Un recorrido conceptual: alinear intención, diseño y operación — sin diagramas corporativos.',
+    steps: [
+      { label: 'Idea', hint: 'problema · alcance · valor' },
+      { label: 'Design', hint: 'experiencia · restricciones' },
+      { label: 'Architecture', hint: 'capas · contratos' },
+      { label: 'Automation', hint: 'procesos en segundo plano' },
+      { label: 'AI integration', hint: 'donde aporta ROI' },
+      { label: 'Deployment', hint: 'operación continua' },
+    ],
+  },
 } as const
-
-/** Franja tipo “arquitectura mental” — editable; puedes sustituir por un diagrama tuyo en `public/`. */
-export const architectureStrip = [
-  { label: 'Experiencia / cliente' },
-  { label: 'API & reglas de negocio' },
-  { label: 'Colas & jobs' },
-  { label: 'IA / automatización' },
-  { label: 'Datos' },
-] as const
 
 export const currentExplorations = [
   'IA aplicada a procesos de negocio',

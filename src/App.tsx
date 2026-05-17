@@ -1,9 +1,9 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import profilePhoto from './assets/profile.png'
+import { ProductBuildFlow } from './components/ProductBuildFlow'
 import { WEB3FORMS_ACCESS_KEY } from './config/web3forms'
 import {
   type ProjectCategory,
-  architectureStrip,
   currentExplorations,
   education,
   experience,
@@ -200,36 +200,13 @@ function App() {
               ))}
             </ul>
 
-            <div className="mt-12">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-navy-800">
-                Cómo pienso un sistema
-              </p>
-              <p className="mt-2 text-sm text-navy-800">
-                Flujo típico (se adapta al proyecto); sirve para alinear expectativas con negocio y con otros devs.
-              </p>
-              <div
-                className="mt-6 overflow-x-auto pb-2"
-                role="img"
-                aria-label="Cadena de capas: de la experiencia de usuario a los datos"
-              >
-                <div className="flex min-w-min items-stretch justify-start gap-2 sm:justify-center">
-                  {architectureStrip.map((step, i) => (
-                    <div key={step.label} className="flex items-center">
-                      <span className="whitespace-nowrap rounded-lg bg-white/85 px-3 py-2.5 text-center text-xs font-medium text-navy-900 shadow-sm ring-1 ring-navy-200/80 sm:text-sm">
-                        {step.label}
-                      </span>
-                      {i < architectureStrip.length - 1 ? (
-                        <span
-                          className="px-1.5 text-navy-400 sm:px-2"
-                          aria-hidden
-                        >
-                          →
-                        </span>
-                      ) : null}
-                    </div>
-                  ))}
-                </div>
-              </div>
+            <div className="mt-10">
+              <ProductBuildFlow
+                eyebrow={whatIBuild.productFlow.eyebrow}
+                title={whatIBuild.productFlow.title}
+                subtitle={whatIBuild.productFlow.subtitle}
+                steps={whatIBuild.productFlow.steps}
+              />
             </div>
 
             <div className="mt-12 border-t border-white/40 pt-10">
