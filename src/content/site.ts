@@ -3,6 +3,8 @@
 export interface SiteConfig {
   name: string
   role: string
+  /** Una línea: qué resultado entregas (no lista de frameworks). */
+  tagline: string
   bio: string
   contact: {
     email: string
@@ -23,8 +25,10 @@ export interface SiteConfig {
 export const site: SiteConfig = {
   name: 'Luis Collins',
   role: 'Full Stack Developer',
+  tagline:
+    'Construyo sistemas web escalables: automatización, integraciones, datos e IA aplicada al negocio.',
   bio:
-    'Desarrollador Full Stack enfocado en crear productos digitales escalables, combinando arquitectura en la nube, ingeniería de datos, automatización e Inteligencia Artificial para impulsar eficiencia y transformación digital.',
+    'Priorizo el producto que resuelve un problema real: arquitectura clara, entregas iterativas y operación estable en la nube. Colaboro con equipos y negocio pensando en mantenimiento, coste y cómo evoluciona el sistema.',
   contact: {
     email: 'luiscollinscor@gmail.com',
     phone: '+51 916369840',
@@ -42,6 +46,8 @@ export type ProjectCategory = 'all' | 'fullstack' | 'ai' | 'infra'
 export type Project = {
   id: string
   title: string
+  /** Valor / problema que resuelve (visible y destacado en la tarjeta). */
+  valueSummary: string
   description: string
   category: Exclude<ProjectCategory, 'all'>
   tags: string[]
@@ -59,8 +65,11 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: '1',
-    title: 'Enterprise Analytics Dashboard',
-    description: 'Panel analítico para métricas en tiempo real.',
+    title: 'Analytics para decisiones en tiempo real',
+    valueSummary:
+      'Centraliza métricas operativas y comerciales para que el negocio deje de depender de planillas y reportes manuales.',
+    description:
+      'Panel administrativo, APIs de agregación y despliegue tolerante a picos de uso; pensado para escalar lecturas y mantener costes controlados.',
     category: 'fullstack',
     tags: ['React', 'Node.js', 'AWS'],
     imageAlt: 'Captura de un dashboard de datos',
@@ -70,23 +79,62 @@ export const projects: Project[] = [
   },
   {
     id: '2',
-    title: 'Cloud Infrastructure Automation',
-    description: 'IaC y despliegue reproducible en la nube.',
+    title: 'Infraestructura repetible en la nube',
+    valueSummary:
+      'Entornos reproducibles y despliegues predecibles: menos sorpresas en producción y más velocidad al incorporar cambios.',
+    description:
+      'Infraestructura como código, contenedores y pipelines alineados a buenas prácticas para equipos que van a crecer.',
     category: 'infra',
     tags: ['Terraform', 'Docker', 'Azure'],
     imageAlt: 'Infraestructura en la nube',
-    image: 'https://cdn.craft.cloud/7afb4613-485e-4c7c-a2fa-5b9b6a02c869/assets/cloud-automation.webp',
+    image:
+      'https://cdn.craft.cloud/7afb4613-485e-4c7c-a2fa-5b9b6a02c869/assets/cloud-automation.webp',
   },
   {
     id: '3',
-    title: 'AI Integration Service',
-    description: 'API para integrar modelos de lenguaje en productos.',
+    title: 'Capa de IA en tu producto',
+    valueSummary:
+      'Expone capacidades de modelo (resumen, clasificación, asistencia) vía API segura para integrarlas en flujos existentes sin reescribir todo el sistema.',
+    description:
+      'Servicio FastAPI async, límites de uso, trazas básicas y patrones listos para evolucionar hacia multi-modelo o agentes cuando tenga sentido.',
     category: 'ai',
     tags: ['Python', 'OpenAI', 'FastAPI'],
     imageAlt: 'Representación de red neuronal',
-    image: 'https://cdn.digitalisationworld.com/uploads/images/81de4a5fe15de9e8af9f655bbf3df3df0450cefadf27350e.jpg'
+    image:
+      'https://cdn.digitalisationworld.com/uploads/images/81de4a5fe15de9e8af9f655bbf3df3df0450cefadf27350e.jpg',
   },
 ]
+
+/** Bloque de posicionamiento: qué construyes y para qué (edítalo con tu voz). */
+export const whatIBuild = {
+  eyebrow: 'Enfoque',
+  headline: 'Qué tipo de sistemas construyo',
+  intro:
+    'No me limito a pantallas: diseño soluciones que integren procesos, datos y automatización, pensando en propiedad del código y en cómo el sistema convive con el negocio día a día.',
+  bullets: [
+    'Plataformas con panel administrativo, roles y flujos reales (más allá de landings).',
+    'Integraciones entre APIs de terceros, colas y trabajos en segundo plano.',
+    'Automatización de procesos repetitivos y piezas de IA aplicada donde aporta ROI.',
+    'Arquitectura lista para crecer: límites claros entre capas, observabilidad básica y despliegue en la nube.',
+  ],
+} as const
+
+/** Franja tipo “arquitectura mental” — editable; puedes sustituir por un diagrama tuyo en `public/`. */
+export const architectureStrip = [
+  { label: 'Experiencia / cliente' },
+  { label: 'API & reglas de negocio' },
+  { label: 'Colas & jobs' },
+  { label: 'IA / automatización' },
+  { label: 'Datos' },
+] as const
+
+export const currentExplorations = [
+  'IA aplicada a procesos de negocio',
+  'Arquitectura SaaS y multi-tenant',
+  'Automatización con orquestadores (p. ej. n8n)',
+  'Pipelines ETL ligeros',
+  'Integraciones tipo MCP / copilots sobre datos internos',
+] as const
 
 /** Skills del CV (sección Skills). */
 export const skillPills = [

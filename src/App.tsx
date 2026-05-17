@@ -3,12 +3,15 @@ import profilePhoto from './assets/profile.png'
 import { WEB3FORMS_ACCESS_KEY } from './config/web3forms'
 import {
   type ProjectCategory,
+  architectureStrip,
+  currentExplorations,
   education,
   experience,
   languages,
   projects,
   site,
   skillPills,
+  whatIBuild,
 } from './content/site'
 
 const filters: { id: ProjectCategory; label: string }[] = [
@@ -102,6 +105,9 @@ function App() {
             <a className="hover:text-navy-900" href="#inicio">
               Inicio
             </a>
+            <a className="hover:text-navy-900" href="#enfoque">
+              Enfoque
+            </a>
             <a className="hover:text-navy-900" href="#experiencia">
               Experiencia
             </a>
@@ -142,10 +148,19 @@ function App() {
             <h1 className="mt-3 text-4xl font-semibold tracking-tight text-navy-900 sm:text-5xl">
               {site.name}
             </h1>
+            <p className="mt-4 max-w-2xl text-pretty text-lg font-medium leading-snug text-navy-900 sm:text-xl">
+              {site.tagline}
+            </p>
             <p className="mt-4 max-w-2xl text-pretty text-navy-800">
               {site.bio}
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <a
+                href="#enfoque"
+                className="rounded-md border border-navy-200 bg-white px-5 py-2.5 text-sm font-medium text-navy-900 hover:border-navy-300"
+              >
+                Cómo trabajo
+              </a>
               <a
                 href="#portfolio"
                 className="rounded-md bg-[var(--color-navy-900)] px-5 py-2.5 text-sm font-medium text-white hover:bg-navy-800"
@@ -163,11 +178,89 @@ function App() {
         </section>
 
         <section
+          id="enfoque"
+          className="border-b border-white/30 bg-white/35 backdrop-blur-md"
+        >
+          <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-20">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-navy-800">
+              {whatIBuild.eyebrow}
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold text-navy-900 sm:text-3xl">
+              {whatIBuild.headline}
+            </h2>
+            <p className="mt-4 max-w-3xl text-pretty text-navy-800">
+              {whatIBuild.intro}
+            </p>
+            <ul className="mt-8 max-w-3xl space-y-3 text-sm text-navy-800">
+              {whatIBuild.bullets.map((line) => (
+                <li key={line} className="flex gap-3">
+                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-navy-900" />
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-12">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-navy-800">
+                Cómo pienso un sistema
+              </p>
+              <p className="mt-2 text-sm text-navy-800">
+                Flujo típico (se adapta al proyecto); sirve para alinear expectativas con negocio y con otros devs.
+              </p>
+              <div
+                className="mt-6 overflow-x-auto pb-2"
+                role="img"
+                aria-label="Cadena de capas: de la experiencia de usuario a los datos"
+              >
+                <div className="flex min-w-min items-stretch justify-start gap-2 sm:justify-center">
+                  {architectureStrip.map((step, i) => (
+                    <div key={step.label} className="flex items-center">
+                      <span className="whitespace-nowrap rounded-lg bg-white/85 px-3 py-2.5 text-center text-xs font-medium text-navy-900 shadow-sm ring-1 ring-navy-200/80 sm:text-sm">
+                        {step.label}
+                      </span>
+                      {i < architectureStrip.length - 1 ? (
+                        <span
+                          className="px-1.5 text-navy-400 sm:px-2"
+                          aria-hidden
+                        >
+                          →
+                        </span>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-12 border-t border-white/40 pt-10">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-navy-800">
+                Actualmente explorando
+              </p>
+              <p className="mt-2 text-sm text-navy-800">
+                Temas donde sigo profundizando; conversación natural en entrevistas y con clientes técnicos.
+              </p>
+              <ul className="mt-6 flex flex-wrap gap-2">
+                {currentExplorations.map((item) => (
+                  <li key={item}>
+                    <span className="inline-flex rounded-full border border-navy-200/80 bg-white/60 px-3.5 py-1.5 text-xs font-medium text-navy-900 backdrop-blur-sm">
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section
           id="portfolio"
           className="border-y border-white/30 bg-white/40 backdrop-blur-md"
         >
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-            <h2 className="text-2xl font-semibold text-navy-900">Proyectos</h2>
+            <h2 className="text-2xl font-semibold text-navy-900">Casos y sistemas</h2>
+            <p className="mt-2 max-w-2xl text-sm text-navy-800">
+              Cada tarjeta resume primero el <strong className="font-semibold text-navy-900">valor</strong>; el detalle y el stack vienen después.
+            </p>
 
             <div className="mt-8 flex flex-wrap gap-2">
               {filters.map((f) => (
@@ -211,7 +304,10 @@ function App() {
                   </div>
                   <div className="flex flex-1 flex-col p-5">
                     <h3 className="font-semibold text-navy-900">{p.title}</h3>
-                    <p className="mt-1 text-sm text-navy-800">{p.description}</p>
+                    <p className="mt-2 text-sm font-medium leading-snug text-navy-900">
+                      {p.valueSummary}
+                    </p>
+                    <p className="mt-2 text-sm text-navy-800">{p.description}</p>
                     <ul className="mt-3 flex flex-wrap gap-1.5">
                       {p.tags.map((t) => (
                         <li key={t}>
