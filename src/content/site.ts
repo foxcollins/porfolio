@@ -22,6 +22,19 @@ export interface SiteConfig {
   }
 }
 
+/** Textos de la sección GitHub (calendario + contexto). */
+export const githubSection = {
+  eyebrow: 'Open source & actividad',
+  title: 'Construyendo en público',
+  lead:
+    'Productos escalables, automatización e IA aplicada al negocio. El calendario muestra ritmo de contribuciones — no es el protagonista del portfolio, es contexto.',
+  buildingChips: [
+    'Flujos con IA',
+    'Experimentos SaaS',
+    'Sistemas automatizados',
+  ],
+} as const
+
 export const site: SiteConfig = {
   name: 'Luis Collins',
   role: 'Full Stack Developer',

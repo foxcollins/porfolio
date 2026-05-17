@@ -1,12 +1,14 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import profilePhoto from './assets/profile.png'
 import { ProductBuildFlow } from './components/ProductBuildFlow'
+import { GithubActivitySection } from './components/GithubActivitySection'
 import { WEB3FORMS_ACCESS_KEY } from './config/web3forms'
 import {
   type ProjectCategory,
   currentExplorations,
   education,
   experience,
+  githubSection,
   languages,
   projects,
   site,
@@ -313,28 +315,14 @@ function App() {
           </div>
         </section>
 
-        <section
-          id="actividad-github"
-          className="mx-auto max-w-6xl px-4 py-16 sm:px-6"
-        >
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-navy-800">
-            Open source activity
-          </p>
-          <h2 className="mt-2 text-2xl font-semibold text-navy-900">
-            GitHub contributions
-          </h2>
-          <p className="mt-2 max-w-2xl text-sm text-navy-800">
-            Aquí conecta el mapa de calor (por ejemplo{' '}
-            <code className="rounded bg-navy-100 px-1 py-0.5 text-xs">
-              react-activity-calendar
-            </code>
-            ) con el usuario{' '}
-            <span className="font-medium">{site.githubUsername}</span>.
-          </p>
-          <div className="mt-6 rounded-xl border border-dashed border-navy-300/50 bg-white/50 px-6 py-16 text-center text-sm text-navy-800 backdrop-blur-sm">
-            Mapa de calor (placeholder)
-          </div>
-        </section>
+        <GithubActivitySection
+          username={site.githubUsername}
+          eyebrow={githubSection.eyebrow}
+          title={githubSection.title}
+          lead={githubSection.lead}
+          buildingChips={githubSection.buildingChips}
+          profileUrl={`https://github.com/${site.githubUsername}`}
+        />
 
         <section
           id="experiencia"
